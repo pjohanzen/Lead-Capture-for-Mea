@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>8-Pocket Suit Giveaway | Early Signup</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+</head>
+<body data-page="page1">
+  <header class="hero hero--centered">
+    <div class="hero__content">
+      <img src="LOGO.png" alt="Essato Customs" class="logo">
+      <p class="eyebrow">Essato Customs</p>
+      <h1>8-Pocket Suit Giveaway Early Signup</h1>
+      <h2>Get early access for our giveaway and reserve a pre-sale slot for our launch! We'll be officially launching the giveaway in January and you'll be able to earn extra entries then.</h2>
+      <div class="metrics">
+        <div>
+          <p class="metrics__label">VIP Seats</p>
+          <p class="metrics__value">150</p>
+        </div>
+        <div>
+          <p class="metrics__label">Suit Variations</p>
+          <p class="metrics__value">45</p>
+        </div>
+        <div>
+          <p class="metrics__label">Launch Month</p>
+          <p class="metrics__value">Jan ’26</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="section section--card">
+    <div class="layout layout--two">
+      <form id="lead-form" class="form card form-card">
+        <div class="floating-title">Your details</div>
+        <div class="form__field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" required placeholder="Full name">
+        </div>
+        <div class="form__field">
+          <label for="phone">Mobile phone</label>
+          <input id="phone" name="phone" type="tel" required placeholder="+63 900 000 0000" pattern="^[0-9+\\-()\\s]{7,}$">
+        </div>
+        <div class="form__field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" required placeholder="you@example.com">
+        </div>
+        <button type="submit" class="btn">Reserve My Spot</button>
+        <p class="form__status" id="lead-status" role="status" aria-live="polite"></p>
+      </form>
+
+      <aside class="info-panel card">
+        <p class="eyebrow">What to expect</p>
+        <h3>Early access perks</h3>
+        <ul class="list list--accent">
+          <li>First dibs on the 8-pocket suit drop.</li>
+          <li>Tailored measurement concierge.</li>
+          <li>Bonus entries when giveaways open in January.</li>
+        </ul>
+        <div class="pill">
+          <p>Next: measurement concierge to confirm your bespoke fit.</p>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p>© <span id="year"></span> Essato Customs · Crafted for women redefining power dressing.</p>
+  </footer>
+</body>
+</html>
+
