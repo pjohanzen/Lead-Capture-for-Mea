@@ -136,8 +136,7 @@
         jacketLength: form.jacketLength.value,
         jacketWidth: form.jacketWidth.value,
         pantsLength: form.pantsLength.value,
-        pantsWidth: form.pantsWidth.value,
-        notes: form.notes.value.trim()
+        pantsWidth: form.pantsWidth.value
       };
 
       if (Object.values(measurements).some((value, idx) => idx < 9 && !value)) {

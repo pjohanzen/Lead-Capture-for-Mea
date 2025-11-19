@@ -6,15 +6,16 @@
   <title>Essato Customs | Measurement Form</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script defer src="script.js"></script>
 </head>
 <body data-page="page2">
   <header class="hero hero--centered hero--subtle">
     <div class="hero__content">
+      <img src="LOGO.png" alt="Essato Customs" class="logo">
       <p class="eyebrow">Step 2 · Measurements</p>
-      <h1>Early Access: Find Your Size</h1>
+      <h1>Find Your Size</h1>
       <p class="lead">When we launch, we'll have a limited supply of suits to sell. You'll want to have your size ready. Grab a measuring tape and follow the guide to take your measurements!</p>
     </div>
   </header>
@@ -30,19 +31,19 @@
           </div>
           <div class="form__field">
             <label for="naturalWaist">Natural Waist (inches)</label>
-            <input id="naturalWaist" name="naturalWaist" type="number" min="20" max="80" step="0.25" required>
+            <input id="naturalWaist" name="naturalWaist" type="number" min="20" max="80" step="0.25" required placeholder="e.g. 28.5">
           </div>
           <div class="form__field">
             <label for="pantWaist">Pant Waist (Mid Rise) (inches)</label>
-            <input id="pantWaist" name="pantWaist" type="number" min="20" max="80" step="0.25" required>
+            <input id="pantWaist" name="pantWaist" type="number" min="20" max="80" step="0.25" required placeholder="e.g. 30">
           </div>
           <div class="form__field">
             <label for="hip">Hip (inches)</label>
-            <input id="hip" name="hip" type="number" min="20" max="90" step="0.25" required>
+            <input id="hip" name="hip" type="number" min="20" max="90" step="0.25" required placeholder="e.g. 38">
           </div>
           <div class="form__field">
             <label for="thigh">Thigh (inches)</label>
-            <input id="thigh" name="thigh" type="number" min="15" max="40" step="0.25" required>
+            <input id="thigh" name="thigh" type="number" min="15" max="40" step="0.25" required placeholder="e.g. 22">
           </div>
         </div>
 
@@ -93,39 +94,22 @@
           </div>
         </div>
 
-        <div class="form__field">
-          <label for="notes">Fit Notes (optional)</label>
-          <textarea id="notes" name="notes" rows="3" placeholder="Anything you'd like us to know?"></textarea>
-        </div>
-
-        <button type="submit" class="btn">Save My Measurements</button>
+        <button type="submit" class="btn">Get My Measurements</button>
         <p class="form__status" id="measurement-status" role="status" aria-live="polite"></p>
       </form>
 
       <aside class="info-panel card info-panel--stacked">
         <p class="eyebrow">Measurement guide</p>
         <img src="measurement guide.png" alt="Measurement guide showing where to measure" class="measurement-guide-img">
-        <div class="tip-card">
-          <p class="tip-card__title">Bust</p>
-          <p>Measure around the fullest part while keeping tape parallel to the floor.</p>
-        </div>
-        <div class="tip-card">
-          <p class="tip-card__title">Natural Waist</p>
-          <p>Wrap the tape around the smallest point (usually above the belly button).</p>
-        </div>
-        <div class="tip-card">
-          <p class="tip-card__title">Hip</p>
-          <p>Measure the widest part of your hips and seat with feet together.</p>
-        </div>
         <div class="pill">
-          <p>Round to the nearest quarter inch—we’ll perfect the rest.</p>
+          <p>Round to the nearest quarter inch—we’ll take care of the rest.</p>
         </div>
       </aside>
     </div>
   </main>
 
   <footer class="footer">
-    <p>Questions? Email us at <a href="mailto:hello@essatocustoms.com">hello@essatocustoms.com</a></p>
+    <p>Questions? Email us at <a href="mailto:hello@measuit.com">hello@measuit.com</a></p>
   </footer>
 </body>
 </html>
