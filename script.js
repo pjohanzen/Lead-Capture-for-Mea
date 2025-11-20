@@ -1,6 +1,10 @@
 (() => {
-  // Set to false to work without backend (frontend-only mode)
-  const USE_BACKEND = false;
+  // Set to true to enable Google Sheets integration
+  const USE_BACKEND = true;
+
+  // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
+  // after deploying the script (see SETUP_INSTRUCTIONS.md)
+  const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdJkeYUNIlZXaI1F2f7uMjZ2QDquxpsCCyKhD129K66q2Hr45m58u4iqs-4KltP2C5fw/exec';
 
   const STORAGE_KEYS = {
     rowId: 'essatoLeadRowId',
@@ -10,8 +14,8 @@
   };
 
   const API_ROUTES = {
-    submitPage1: '/backend/submitPage1.js',
-    submitPage2: '/backend/submitPage2.js',
+    submitPage1: GOOGLE_APPS_SCRIPT_URL,
+    submitPage2: GOOGLE_APPS_SCRIPT_URL, // Same URL, different formType
     email1: '/backend/email1.js',
     email2: '/backend/email2.js'
   };
@@ -64,6 +68,7 @@
       toggleButton(submitBtn, true);
 
       const payload = {
+        formType: 'page1',
         name: form.name.value.trim(),
         phone: form.phone.value.trim(),
         email: form.email.value.trim()
@@ -80,16 +85,16 @@
         
         if (USE_BACKEND) {
           const response = await postJSON(API_ROUTES.submitPage1, payload);
-          rowId = response.rowId;
-          if (!rowId) throw new Error('Missing row ID from server.');
           
-          await postJSON(API_ROUTES.email1, {
-            rowId,
-            email: payload.email,
-            name: payload.name,
-            phone: payload.phone,
-            page2Url: new URL('page2.html', window.location.origin).href
-          });
+          // Google Apps Script returns rowNumber, we'll use that as rowId
+          rowId = response.rowNumber ? `row-${response.rowNumber}` : generateMockRowId();
+          
+          if (!response.success) {
+            throw new Error(response.error || 'Failed to save lead.');
+          }
+          
+          // Skip email sending for now (can be added later)
+          console.log('Lead saved successfully to Google Sheets!');
         } else {
           // Frontend-only mode: generate mock rowId and simulate delay
           await delay(800);
@@ -152,8 +157,16 @@
 
       try {
         if (USE_BACKEND) {
-          await postJSON(API_ROUTES.submitPage2, {
-            rowId,
+          // Extract the actual row number from rowId (format: "row-123")
+          const rowNumber = rowId ? parseInt(rowId.split('-')[1]) : null;
+          
+          if (!rowNumber) {
+            throw new Error('Invalid row number. Please start from page 1.');
+          }
+
+          const response = await postJSON(API_ROUTES.submitPage2, {
+            formType: 'page2',
+            rowNumber: rowNumber,
             measurements,
             sizes: {
               jacket: jacketSize,
@@ -161,18 +174,13 @@
             }
           });
 
-          await postJSON(API_ROUTES.email2, {
-            rowId,
-            email: localStorage.getItem(STORAGE_KEYS.email) || '',
-            jacketSize,
-            pantSize,
-            sizeChartUrl,
-            socials: {
-              instagram: 'https://instagram.com/essatocustoms',
-              linkedin: 'https://www.linkedin.com/company/essato-customs',
-              tiktok: 'https://www.tiktok.com/@essatocustoms'
-            }
-          });
+          if (!response.success) {
+            throw new Error(response.error || 'Failed to save measurements.');
+          }
+
+          console.log('Measurements saved successfully to Google Sheets!');
+          
+          // Skip email sending for now (can be added later)
         } else {
           // Frontend-only mode: simulate delay
           await delay(800);
@@ -233,25 +241,23 @@
   }
 
   async function postJSON(url, data) {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    });
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'text/plain' // Changed to avoid CORS preflight
+        },
+        body: JSON.stringify(data),
+        redirect: 'follow'
+      });
 
-    if (!response.ok) {
-      let message = 'Request failed.';
-      try {
-        const payload = await response.json();
-        message = payload.error || message;
-      } catch (error) {
-        // ignore
-      }
-      throw new Error(message);
+      // Google Apps Script returns the response
+      const result = await response.json();
+      return result;
+    } catch (error) {
+      console.error('Fetch error:', error);
+      throw new Error('Failed to submit form. Please try again.');
     }
-    return response.json();
   }
 
   function toggleButton(button, isLoading) {
