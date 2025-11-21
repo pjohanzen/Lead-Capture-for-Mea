@@ -4,7 +4,7 @@
 
   // IMPORTANT: Replace this URL with your Google Apps Script Web App URL
   // after deploying the script (see SETUP_INSTRUCTIONS.md)
-  const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxdJkeYUNIlZXaI1F2f7uMjZ2QDquxpsCCyKhD129K66q2Hr45m58u4iqs-4KltP2C5fw/exec';
+  const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw223ky386uwylwqQYKawizC5njmqltcLR_EED_wZgU28hXIBJb5aSHBb9_0HrRBEKGnw/exec';
 
   const STORAGE_KEYS = {
     rowId: 'essatoLeadRowId',
@@ -86,15 +86,17 @@
         if (USE_BACKEND) {
           const response = await postJSON(API_ROUTES.submitPage1, payload);
           
+          console.log('Response received:', response);
+          
+          // Check if the response indicates success
+          if (!response.success) {
+            throw new Error(response.error || 'Failed to save your entry. Please try again.');
+          }
+          
           // Google Apps Script returns rowNumber, we'll use that as rowId
           rowId = response.rowNumber ? `row-${response.rowNumber}` : generateMockRowId();
           
-          if (!response.success) {
-            throw new Error(response.error || 'Failed to save lead.');
-          }
-          
-          // Skip email sending for now (can be added later)
-          console.log('Lead saved successfully to Google Sheets!');
+          console.log('Entry saved successfully! Row ID:', rowId);
         } else {
           // Frontend-only mode: generate mock rowId and simulate delay
           await delay(800);
@@ -108,8 +110,8 @@
 
         window.location.href = 'page2.html';
       } catch (error) {
-        console.error(error);
-        statusEl.textContent = error.message || 'Something went wrong. Please try again.';
+        console.error('Submission error:', error);
+        statusEl.textContent = error.message || 'Failed to submit form. Please try again.';
         toggleButton(submitBtn, false);
       }
     });
@@ -251,12 +253,21 @@
         redirect: 'follow'
       });
 
+      // Check if response is ok
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+
       // Google Apps Script returns the response
       const result = await response.json();
+      
+      // Log the full response for debugging
+      console.log('Server response:', result);
+      
       return result;
     } catch (error) {
       console.error('Fetch error:', error);
-      throw new Error('Failed to submit form. Please try again.');
+      throw new Error('Failed to connect to server. Please check your connection and try again.');
     }
   }
 
